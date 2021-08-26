@@ -6,3 +6,6 @@ class Homeview(generic.TemplateView):
 
 
 # Create your views here.
+class ContactView(generic.FormView):
+    form_class=
+    template_name='contact.html'
