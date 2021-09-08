@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'crispy_forms',
 
     'core',
+    'cart',
 ]
 #notificaciones contactar via web
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
