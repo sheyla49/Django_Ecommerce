@@ -7,12 +7,12 @@
     <div class="container">
         <div class="row">
              <div class="col-md-12 mb-0">
-             <a href="{% url 'home' %}">Inicio</a>
+             <a href="{% url 'home' %}">Home</a>
              <span class="mx-2 mb-0">/</span>
-             <strong class="text-block">Contacto</strong>
+             <strong class="text-block">Contact</strong>
              </div>
         </div>
-    </div>    
+    </div>
 </div>
 
 <div class="site-section">
@@ -26,7 +26,7 @@
 <!-- Para no se pueda hackear los correos del cliente-->
                 {% csrf_token %}
                 {{ form|crispy }}
-                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Enviar Mensaje"/> 
+                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Enviar Mensaje"/>
                 </form>
             </div>
         </div>

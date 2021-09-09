@@ -11,7 +11,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.Homeview.as_view(), name='home'),
     path('contact/', views.ContactView.as_view(), name='contact'),
-    path('cart/', include('cart.urls', namespace='cart')),
+    path('cart/', include('cart.urls', namespace='shop')),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
