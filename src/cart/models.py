@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+
+
 User = get_user_model()
 
 class Address(models.Model):
@@ -28,7 +30,7 @@ class  Meta:
 class Product(models.Model):
     title = models.CharField(max_length=150)
     #cargarlo urls
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     image = models.ImageField(upload_to='product_images')
     description = models.TextField()
     create = models.DateTimeField(auto_now_add=True)
