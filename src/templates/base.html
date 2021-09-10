@@ -4,7 +4,19 @@
 <html lang="en">
 <head>
     <title>Django Ecom {% block head_title %}{% endblock %}</title>
-    <h1 align="center" color="black">FARBA S.A</h1>
+    <header class="header clear" role="banner">
+     <div class="container-fluid"
+     style="background-image: url({% static 'images/cuerpo.jpg' %});"
+     data-aos="fade">
+     <div class="w-auto p-3">
+                <div class="row">
+                    <div class="col-md-12 mt-5 pt-md-5">
+                    </div>
+        </div>
+        </div>
+        </div>
+    </header>
+   <h1 align="center" class="text-black">FARBA S.A</h1>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="57x57" href="{% static 'icons/apple-icon-57x57.png' %}">
@@ -40,6 +52,7 @@
 </head>
 
 <body>
+ 
 
 <div class="site-wrap">
     <header class="site-navbar" role="banner">

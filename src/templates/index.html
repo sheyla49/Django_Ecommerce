@@ -3,13 +3,61 @@
 
 {% block content %}
 <!-- agrege el logo a la pagina-->
-<div class="site-block-cover" style="background-image: url({% static 'images/hero.jpg' %});"data-aos="fade">
-    <div class="container">
+<main role="main">
+	    <section class="home__slider">
+	        <div class="card mb-3">
+                <div class="item" style="background-image:url({% static 'images/hero.jpeg' %});">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-12 pt-12 pt-md-4">
+            <div class="col-md-12 pt-5 pt-md-4">
             </div>
+         </div>
         </div>
     </div>
 </div>
+ </section>
+</main>
+
+ <section class="somos__calidad">
+            <div class="container">
+                <h3>Nos aseguramos de tener solo <strong>productos de calidad</strong></h3>
+                <div class="somos__fabricamos">
+                    <strong>Fabricamos</strong> nuestros productos<br>
+                    con una <strong>ciencia exacta</strong>
+                </div>
+
+                <div class="row row__gutter-3">
+                    <div class="col-md-4">
+                       <div class="item">
+                       <p>
+                           <img src="https://pinturasfarba.com/wp-content/themes/farba/img/icons/hacemos1.svg" alt="calidad" style="width:120px;">
+                       </p>
+                       <h3>Formulación de Calidad</h3>
+                           <p><strong>Formulando productos duraderos</strong> con una profundidad de color, adhesión, rendimiento y absorción de alta calidad.</p>
+                        </div>
+                    </div><!-- col -->
+
+                    <div class="col-md-4">
+                       <div class="item">
+                       <p>
+                           <img src="https://pinturasfarba.com/wp-content/themes/farba/img/icons/hacemos2.svg" alt="calidad" style="width:120px;">
+                       </p>
+                       <h3>Ingredientes de Calidad</h3>
+                           <p>Usamos <strong>ingredientes de la más alta calidad</strong> cumpliendo estándares de calidad con procesos homologados con los más ricos niveles de pigmento, adhesión, durabilidad y tecnología. </p>
+                        </div>
+                    </div><!-- col -->
+
+                    <div class="col-md-4">
+                       <div class="item">
+                       <p>
+                           <img src="https://pinturasfarba.com/wp-content/themes/farba/img/icons/hacemos3.svg" alt="calidad" style="width:120px;">
+                       </p>
+                       <h3>Resultados de Calidad</h3>
+                           <p>Ya sea que desees pintar, recubrir, sellar o reparar tu espacio ten la seguridad que con <strong>Farba</strong> no solo tienes calidad y tecnología, obtienes <strong>precios justos y calidad superior,</strong> lo que nos hace "la decisión mas inteligente para su Proyecto".</p>
+                        </div>
+                    </div><!-- col -->
+                </div><!-- row -->
+            </div>
+        </section>
 
 {% endblock content %}
