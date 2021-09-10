@@ -1,6 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-hola mundo
+<!-- agrege el logo a la pagina-->
+<div class="site-block-cover" style="background-image: url({% static 'images/hero.jpg' %});"data-aos="fade">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 pt-12 pt-md-4">
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock content %}
