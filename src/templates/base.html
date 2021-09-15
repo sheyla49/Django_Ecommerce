@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <title>Django Ecom {% block head_title %}{% endblock %}</title>
-    <header class="header clear" role="banner">
+<!--    <header class="header clear" role="banner"> -->
      <div class="container jumbotron"
      style="background-image: url({% static 'images/cuerpo.jpg' %});"
      data-aos="fade">
@@ -79,7 +79,7 @@
                                     {% endif %}
                                 </li>
                                 <li>
-                                    <a href="/" class="site-cart">
+                                    <a href="{% url 'cart:summary' %}" class="site-cart">
                                         <span><i class="fas fa-shopping-cart"></i></span>
                                         <span class="count">0</span>
                                     </a>
