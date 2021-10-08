@@ -4,7 +4,18 @@ from django.views import generic
 from .forms import ContactForms
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from cart.models import Order
 
+class ProfileView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        context.updated({
+            "orders": Order.objects.filter(user=self.request.user, ordered=True)
+        })
+        return context
 
 class Homeview(generic.TemplateView):
     template_name = 'index.html'

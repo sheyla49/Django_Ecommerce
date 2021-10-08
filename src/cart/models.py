@@ -1,10 +1,13 @@
+import django
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from django.shortcuts import reverse
 
+
 User = get_user_model()
+
 
 class Address(models.Model):
     ADDRESS_CHOICES = (
@@ -16,17 +19,18 @@ class Address(models.Model):
     address_line_1 = models.CharField(max_length=150)
     address_line_2 = models.CharField(max_length=150)
     city = models.CharField(max_length=100)
-    zip_code = models.CharField(max_length=100)
+#    zip_code = models.CharField(max_length=100)
     address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
     default = models.BooleanField(default=False)
      #usuarios seleccionar su default address
 
-    def _str_(self):
-        return f"{self.address_line_1}, {self.address_line_2}, {self.city}, {self.zip_code}"
+    def __str__(self):
+        return f"{self.address_line_1}, {self.address_line_2}, {self.city}"
+        # {self.zip_code}
 
 #nombres verbosos como plural
-class  Meta:
-    verbose_name_plural = 'Adresses'
+    class  Meta:
+        verbose_name_plural = 'Adresses'
 
 class ColourVariation(models.Model):
     name = models.CharField(max_length=50)
@@ -86,16 +90,16 @@ class OrderItem(models.Model):
 #la compra, vincular con el usuario
 class Order(models.Model):
     user = models.ForeignKey(
-            User,blank=True, null=True, on_delete=models.CASCADE)
+            User, blank=True, null=True, on_delete=models.CASCADE)
     start_date = models.DateTimeField(auto_now_add=True)
     order_date = models.DateTimeField(blank=True, null=True) #fecha fue comprado
-    ordered = models.BooleanField(default=False)
+    ordered= models.BooleanField(default=False)
 
 #Si el usuario borro su direccion para que lo pueda colocar en la compra
     billing_address = models.ForeignKey(
         Address, related_name='billing_address', blank=True, null=True, on_delete=models.SET_NULL)
-    shipping_address = models.ForeignKey(
-        Address, related_name='shipping_address', blank=True, null=True, on_delete=models.SET_NULL)
+#    shipping_address = models.ForeignKey(
+#        Address, related_name='shipping_address', blank=True, null=True, on_delete=models.SET_NULL)
 
     def _str_(self):
         return self.reference_number
@@ -104,7 +108,7 @@ class Order(models.Model):
     @property
     def reference_number(self):
         return f"ORDER-{self.pk}"
-        
+
     def get_raw_subtotal(self):
         total=0
         for order_item in self.items.all():
@@ -117,9 +121,9 @@ class Order(models.Model):
 
 
     def get_raw_total(self):
-        subtotal = self.get_raw_subtotal()
         tax = 0.18
-        total = subtotal + tax
+        subtotal = self.get_raw_subtotal()
+        total = tax + subtotal
         return total
 
     def get_total(self):
@@ -135,7 +139,7 @@ class Payment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     successful = models.BooleanField(default=False)
     amount = models.FloatField()
-    raw_response = models.TextField() #API del p  rocesador de pagos
+    raw_response = models.TextField() #API del procesador de pagos
 
     def _str_(self):
         return self.reference_number

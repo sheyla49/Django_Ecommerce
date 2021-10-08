@@ -3,7 +3,6 @@ import environ
 
 
 env = environ.Env()
-
 #leer ela archivo .env
 environ.Env.read_env()
 
@@ -11,7 +10,7 @@ from pathlib import Path
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = env('SECRET_KEY')
 #la llave de seguridad de la pagina
 DEBUG = env('DEBUG')
@@ -30,9 +29,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    
 
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 
     'crispy_forms',
+
 
     'core',
     'cart',
@@ -78,7 +83,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -103,9 +108,22 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
-# estetica del  aplicativo
+#https://docs.djangoproject.com/en/3.2/topics/i18n/
+
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend', # Needed to login by username in Django admin, regardless of `allauth`
+    'allauth.account.auth_backends.AuthenticationBackend', # `allauth` specific authentication methods, such as login by e-mail
+
+]
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = '/'
 
 LANGUAGE_CODE = 'en-us'
 
@@ -126,6 +144,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+PAYPAL_CLIENT_ID= env('PAYPAL_SANDBOX_CLIENT_ID')
+PAYPAL_SECRET_KEY= env('PAYPAL_SANDBOX_SECRET_KEY')
 
 if DEBUG is False:
     SESSION_COOKIE_SECURE = True
@@ -155,3 +176,5 @@ if DEBUG is False:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+PAYPAL_CLIENT_ID= env('PAYPAL_LIVE_CLIENT_ID')
+PAYPAL_SECRET_KEY= env('PAYPAL_LIVE_SECRET_KEY')

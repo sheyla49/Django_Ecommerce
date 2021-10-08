@@ -1,0 +1,140 @@
+{% extends "base.html" %} {% block content %}
+
+<style>
+    .lds-hourglass {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+    }
+    
+    .lds-hourglass:after {
+        content: " ";
+        display: block;
+        border-radius: 50%;
+        width: 0;
+        height: 0;
+        margin: 8px;
+        box-sizing: border-box;
+        border: 32px solid rgb(153, 255, 51);
+        border-color: rgb(153, 255, 51) transparent rgb(153, 255, 51) transparent;
+        animation: lds-hourglass 1.2s infinite;
+    }
+    
+    @keyframes lds-hourglass {
+        0% {
+            transform: rotate(0);
+            animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        }
+        50% {
+            transform: rotate(900deg);
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        100% {
+            transform: rotate(1800deg);
+        }
+    }
+</style>
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="alert alert-success" role="alert" id="alertSuccess" style="display:none;">
+                Tu pago fue exitoso.
+            </div>
+            <div class="alert alert-danger" role="alert" id="alertFailure" style="display:none;">
+                Tu pago no pudo realizarse, intenta de nuevo.
+            </div>
+            <div class="text-center py-3">
+                <div id="loader" class="lds-hourglass" style="margin:auto; display:none;"></div>
+            </div>
+
+            <div id="paymentInfo">
+                <p>Orden Total: S/{{ order.get_total }}</p>
+                <h4>Selecciona el metodo de pago</h4>
+                <div id="paypal-button-container"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %} {% block scripts %}
+<script src="https://www.paypal.com/sdk/js?client-id={{ PAYPAL_CLIENT_ID }}"></script>
+
+<script>
+        const loader = document.getElementById('loader');
+        const paymentInfo = document.getElementById('paymentInfo');
+        //activar la carga de ejecucion de pago
+        function toggleLoader(on) {
+            loader.style.display = on === true ? "block" : "none";
+            paymentInfo.style.display = on === true ? "none" : "block";
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+/*        function sendOrderConfirmed() {
+            return fetch("{% url 'cart:confirm-order' %}", {
+                method "post",
+                body: JSON.stringify(details),
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                }
+            })
+        }
+*/
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{ order.get_total }}' // Can reference variables or functions. Example: `value: document.getElementById('...').value`
+                        }
+                    }]
+                });
+            },
+        onApprove: function(data, actions) {
+            toggleLoader(true);
+            return actions.order.capture().then(function(orderData) {
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    sendOrderConfirmed(details).then(res => {
+                          toggleLoader(false)
+
+                            const alertSuccess = document.getElementById("alertSuccess"); //para capturar error al hacer el pago
+                            alertSuccess.style.display = 'block';
+
+                        setTimeout(function() {
+                            window.location.replace("{{ CALLBACK_URL }}")
+                        }, 3000);
+                    })
+                })
+                    .catch(err => {
+                        const alertFailure = document.getElementById("alertFailure"); //para capturar error al hacer el pago
+                        alertFailure.style.display = 'block';
+                    })
+                    .finally(() => toggleLoader(False)); //para capturar error al hacer el pago
+        }
+    }).render('#paypal-button-container');
+</script>
+
+{% endblock scripts %}
