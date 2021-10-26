@@ -1,3 +1,4 @@
+import django
 from django import forms
 from .models import OrderItem, ColourVariation, Product, SizeVariation, Address
 from django.contrib.auth import get_user_model
@@ -34,7 +35,8 @@ class AddressForm(forms.Form):
     billing_city = forms.CharField(required=False)
 
     selected_billing_address = forms.ModelChoiceField(
-        Address.objects.none(), required=False
+        Address.objects.none(),
+        required=False,
     )
 
     def __init__(self, *args, **kwargs):
@@ -44,7 +46,7 @@ class AddressForm(forms.Form):
         user = User.objects.get(id=user_id)
 
         billing_address_qs = Address.objects.filter(
-            user=users,
+            user=user,
             address_type='B',
         )
 
